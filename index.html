@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    button {
+        margin-left: 8px;
+    }
+</style>
+<body>
+<fieldset style="width: fit-content">
+    <legend>Black Red ?</legend>
+    <p>Deck 1 Score : <input disabled type="text" id="score1"></p>
+    <p>Deck 2 Score : <input disabled type="text" id="score2"></p>
+    <p id ="card"></p>
+    <p>
+        <button type="button" onclick="startUp()">Shuffle and Deal</button>
+        <button type="button" onclick="check(deck)">Check Score</button>
+    </p>
+</fieldset>
+<p id="dis"></p>
+</body>
+<script>
+    let deck = [];
+    let sumD1 = 0;
+    let sumD2 = 0;
+    let sc1 = document.getElementById("score1");
+    let sc2 = document.getElementById("score2");
+    let dec = document.getElementById("card");
+    let dis = document.getElementById("dis");
+    function startUp() {
+        deck =[];
+        for (let i = 0; i < 52; i++) {
+            deck.push(i + 1);
+        }
+        let CIndex = deck.length - 1;
+        let tmp;
+        let randIndex;
+        while (CIndex != 0) {
+            randIndex = Math.floor(Math.random() * CIndex);
+            tmp = deck[CIndex];
+            deck[CIndex] = deck[randIndex];
+            deck[randIndex] = tmp;
+            CIndex--;
+        }
+        let deck1=[];
+        let deck2=[];
+        for (let i = 0; i < deck.length / 2; i++){
+            deck1.push(deck[i]);
+            deck2.push(deck[deck.length-1-i]);
+        }
+        dec.innerText="Deck After Shuffle: "+"["+deck1+"] "+" ["+deck2+"]";
+    }
+
+    function check(deck) {
+        for (let i = 0; i < deck.length / 2; i++) {
+            if (deck[i] < deck[deck.length - 1 - i]) {
+                sumD2++;
+            } else {
+                sumD1++;
+            }
+        }
+        sc1.value = sumD1;
+        sc2.value = sumD2;
+        if(sumD1>sumD2){
+            dis.innerText="First Half Have Higher Score";
+        }else if(sumD1<sumD2){
+            dis.innerText="Second Half Have Higher Score";
+        }else{
+            dis.innerText="Same Score";
+        }
+        sumD2 = 0;
+        sumD1 = 0;
+
+    }
+</script>
+</html>
